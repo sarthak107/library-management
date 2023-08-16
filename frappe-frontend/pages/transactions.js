@@ -22,7 +22,7 @@ export default function Transactions(){
             <div className="flex items-center flex-col justify-center p-5 gap-10 mt-10">
                 <div>
                     <div className='flex items-center justify-around w-full gap-3'>
-                        <div className='w-[17rem] font-bold h-[2.5rem] py-1 hover:cursor-pointer text-center hover:scale-110 ease-in-out duration-300'>Name</div>
+                        <div className='w-[17rem] font-bold h-[2.5rem] py-1 hover:cursor-pointer text-center hover:scale-110 ease-in-out duration-300'>Member ID</div>
                         <div className='w-[17rem] font-bold h-[2.5rem] py-1 hover:cursor-pointer text-center hover:scale-110 ease-in-out duration-300'>Amount</div>
                         <div className='w-[17rem] font-bold h-[2.5rem] py-1 hover:cursor-pointer text-center hover:scale-110 ease-in-out duration-300'>Date of Transfer</div>
                     </div>
