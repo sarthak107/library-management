@@ -3,141 +3,35 @@ from flask_cors import CORS, cross_origin
 import requests
 import sqlite3
 
-
 app = Flask(__name__)
 CORS(app)
-# response = requests.get(f"https://frappe.io/api/method/frappe-library?isbn=1416912274")
-# response = response.json()['message']
-# print(response)
-# connect = sqlite3.connect('database.db')
 
-# cursor = connect.cursor()
-# print(cursor.execute("select * from books").fetchall())
-# pp = cursor.execute('select count(memberID) from issues where memberID = 1').fetchall()
-# print(pp[0][0])
-# cursor.execute(f"delete from issues where bookID = '088001508X'")
-# # for i in range(3,4):
-# #     response = requests.get(f"https://frappe.io/api/method/frappe-library?page={i}")
-# #     if response.status_code == 200:
-        
-# #         res = response.json(); res = res['message']
-# #         for book in res:            
-# #             cursor.execute(f"INSERT INTO BOOKS (bookID, title, authors, publisher) VALUES (?, ?, ?, ?)", (int(book['bookID']), str(book['title']), str(book['authors']), str(book['publisher'])))
-# #         print(i)
-
-# connect.commit()
-
-# IDHAR SAARA BOOKS VAALE TABLE KA API HAI
-@app.route('/getBooks', methods = ['GET'])
-def getBooks():
-    connect = sqlite3.connect('database.db')
-    cursor = connect.cursor()
-    req = request.form
+@app.route('/getBooks', methods = ['GET', 'POST'])
+def fun():
     
-    if 'title' in req:
-        response = requests.get(f"https://frappe.io/api/method/frappe-library?title={req['title']}&page={req['page']}")
+    
+    if 'title' in request.args and request.args['title']:
+        title = request.args['title']
+        res = requests.get(f"https://frappe.io/api/method/frappe-library?title={title}&page={request.args['page']}")
     else:
-        response = requests.get(f"https://frappe.io/api/method/frappe-library?page={req['page']}")
-    
-    response = response.json()['message']
-    
-    for book in response:
-        book['isAvailable'] = 1
-        temp = cursor.execute("SELECT * FROM BOOKS WHERE title like (?)", (book['title'], )).fetchall()
-        
-        if temp: book['isAvailable'] = 0
-    
-    return response
-
-@app.route('/issueBook', methods = ['POST'])
-def issueBooks():
-    connect = sqlite3.connect('database.db')
-    cursor = connect.cursor()
-    req = request.json
-    
-    nums = cursor.execute("select debt from members where memberID = (?)", (req['memberID'],)).fetchall()[0][0]
-    available = cursor.execute("select count(bookID) from BOOKS where bookID = (?)", (req['isbn'],)).fetchall()[0][0]
-    
-    if nums>=500:
-        return f"Cannot issue anymore books to member with ID {req['memberID']}. Debt exceeds Rs.500."
-    if available:
-        return f"Book unavailable!"
-
-    try:
-        cursor.execute(f"insert into issues(memberID, bookID, doi) values(?,?,?)", (req['memberID'], req['isbn'], req['doi']))
-        
-        
-        temp = cursor.execute("SELECT debt FROM MEMBERS where memberID=(?)", (req['memberID'], )).fetchall(); currDebt = temp[0][0]
-        # print(req)
-        cursor.execute(f"update MEMBERS set debt = {currDebt+100} where memberID = (?)", (req['memberID'],))
-        
-  
-        response = requests.get(f"https://frappe.io/api/method/frappe-library?isbn={req['isbn']}")
-        response = response.json()['message'][0]
-        cursor.execute(f"insert into BOOKS(bookID, title, authors, publisher) values(?,?,?,?)", (response['isbn'], response['title'], response['authors'], response['publisher']))
-        connect.commit()
-    
-        return f"Book with isbn {req['isbn']} issued to member with ID {req['memberID']}!"
-    except:
-        return f"Internal server error!"
-    
-@app.route('/returnBook', methods = ['POST'])
-def returnBooks():
-    connect = sqlite3.connect('database.db')
-    cursor = connect.cursor()
-    req = request.json
-    
-    memberID = req['memberID']; isbn = req['isbn']; dor = req['dor']
-    
-    doi = cursor.execute("select doi from issues where bookID = (?)", (isbn,)).fetchall()[0][0]
-    
-    dor = dor.split('-')
-    doi = doi.split('-')
-    
-    # print(doi, dor)
-    
-    temp = cursor.execute("SELECT debt FROM MEMBERS where memberID=(?)", (memberID, )).fetchall(); currDebt = temp[0][0]
-    
-    if dor[0]>doi[0]:
-        cursor.execute(f"update MEMBERS set debt = {currDebt+(int(dor[0])-int(doi[0]))*10000} where memberID = (?)", (memberID, ))
-    elif dor[1]>doi[1]:
-        cursor.execute(f"update MEMBERS set debt = {currDebt+ (int(dor[1])-int(doi[1]))*500 } where memberID = (?)", (memberID, ))
-    else:
-        cursor.execute(f"update MEMBERS set debt = {currDebt+(int(dor[2])-int(doi[2]))*100 if int(dor[2])-int(doi[2])>14 else currDebt } where memberID = (?)", (memberID, ))
-    connect.commit()    
+        res = requests.get(f"https://frappe.io/api/method/frappe-library?page={request.args['page']}")
     
     try:
-        cursor.execute(f"delete from issues where bookID = (?)", (isbn, ))
-        connect.commit()
-        
-        # temp = cursor.execute("SELECT debt FROM MEMBERS where memberID=(?)", (memberID, )).fetchall(); currDebt = temp[0][0]
-        # cursor.execute(f"update MEMBERS set debt = {currDebt-100} where memberID = (?)", (memberID, ))
-        # connect.commit()
-        
-        cursor.execute("delete from BOOKS where bookID = (?)", (isbn, ))
-        connect.commit()
-        
-        
-        return f"Book with isbn {req['isbn']} returned by member with ID {req['memberID']}!"
+        res = res.json()['message']
     except:
-        return f"Internal server error!"
+        res = []
     
-    
-    
-    
+    return res
 
 
-# =====================================================================================================
-
-# IDHAR SAARA MEMBERS VAALE TABLE KE API HAI
-@app.route('/getMembers', methods = ['GET'])
+# I die
+@app.route('/getMembers', methods = ['GET', 'POST'])
 def getMembers():
     connect = sqlite3.connect('database.db')
     cursor = connect.cursor()
-    req = request.form
     
-    if 'name' in req:
-        temp = cursor.execute(f"SELECT * FROM MEMBERS WHERE name LIKE '%{(req['name'])}%'").fetchall()
+    if 'name' in request.args and request.args['name']:
+        temp = cursor.execute(f"SELECT * FROM MEMBERS WHERE name LIKE '%{(request.args['name'])}%'").fetchall()
     else:
         temp = cursor.execute("SELECT * FROM MEMBERS").fetchall()
     
@@ -220,14 +114,118 @@ def clearDebts():
         return f"Internal Server Error!"
     
     
+@app.route('/issueBook', methods = ['POST'])
+def issueBooks():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    req = request.json
     
+    nums = cursor.execute("select debt from members where memberID = (?)", (req['memberID'],)).fetchall()[0][0]
+    available = cursor.execute("select count(bookID) from BOOKS where bookID = (?)", (req['isbn'],)).fetchall()[0][0]
     
-    
-@app.route('/load', methods = ['GET'])
-def fun():
-    return 'fun'
+    if nums>=500:
+        return f"Cannot issue anymore books to member with ID {req['memberID']}. Debt exceeds Rs.500."
+    if available:
+        return f"Book unavailable!"
 
-            
+    try:
+        cursor.execute(f"insert into issues(memberID, bookID, doi) values(?,?,?)", (req['memberID'], req['isbn'], req['doi']))
+        
+        
+        temp = cursor.execute("SELECT debt FROM MEMBERS where memberID=(?)", (req['memberID'], )).fetchall(); currDebt = temp[0][0]
+        # print(req)
+        cursor.execute(f"update MEMBERS set debt = {currDebt+100} where memberID = (?)", (req['memberID'],))
+        
+  
+        response = requests.get(f"https://frappe.io/api/method/frappe-library?isbn={req['isbn']}")
+        response = response.json()['message'][0]
+        cursor.execute(f"insert into BOOKS(bookID, title, authors, publisher) values(?,?,?,?)", (response['isbn'], response['title'], response['authors'], response['publisher']))
+        connect.commit()
+    
+        return f"Book with isbn {req['isbn']} issued to member with ID {req['memberID']}!"
+    except:
+        return f"Internal server error!"
+    
+@app.route('/returnBook', methods = ['POST'])
+def returnBooks():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    req = request.json
+    
+    memberID = req['memberID']; isbn = req['isbn']; dor = req['dor']
+    
+    doi = ""
+    try:
+        stuff = cursor.execute("select doi, memberID from issues where bookID = (?)", (isbn,)).fetchall()   
+        print(stuff)
+        doi = stuff[0][0]
+        if stuff[0][1]!=memberID: return f"Book wasn't issued to the current user in the first place!"
+    except:
+        return f"Book wasn't issued in the first place!"
+    
+    dor = dor.split('-')
+    doi = doi.split('-')
+    
+    # print(doi, dor)
+    
+    temp = cursor.execute("SELECT debt FROM MEMBERS where memberID=(?)", (memberID, )).fetchall(); currDebt = temp[0][0]
+    
+    if dor[0]>doi[0]:
+        cursor.execute(f"update MEMBERS set debt = {currDebt+(int(dor[0])-int(doi[0]))*10000} where memberID = (?)", (memberID, ))
+    elif dor[1]>doi[1]:
+        cursor.execute(f"update MEMBERS set debt = {currDebt+ (int(dor[1])-int(doi[1]))*500 } where memberID = (?)", (memberID, ))
+    else:
+        cursor.execute(f"update MEMBERS set debt = {currDebt+(int(dor[2])-int(doi[2]))*100 if int(dor[2])-int(doi[2])>14 else currDebt } where memberID = (?)", (memberID, ))
+    connect.commit()    
+    
+    try:
+        cursor.execute(f"delete from issues where bookID = (?)", (isbn, ))
+        connect.commit()
+        
+        # temp = cursor.execute("SELECT debt FROM MEMBERS where memberID=(?)", (memberID, )).fetchall(); currDebt = temp[0][0]
+        # cursor.execute(f"update MEMBERS set debt = {currDebt-100} where memberID = (?)", (memberID, ))
+        # connect.commit()
+        
+        cursor.execute("delete from BOOKS where bookID = (?)", (isbn, ))
+        connect.commit()
+        
+        
+        return f"Book with isbn {req['isbn']} returned by member with ID {req['memberID']}!"
+    except:
+        return f"Internal server error!"
+    
+@app.route('/getTransaction', methods = ['GET'])  
+def getTransaction():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()    
+
+    res = cursor.execute(f"select * from TRANSACTIONS").fetchall()
+    ans = []
+    for transaction in res:
+        name = cursor.execute(f"select name from MEMBERS where memberID=(?)", (transaction[1], )).fetchall()[0][0]    
+        temp = {}
+        temp['amount']= transaction[2]
+        temp['dot']=transaction[3]
+        temp['name']= name
+        ans.append(temp)
+
+    return ans[::-1]
+
+@app.route('/getIssuedBooks', methods = ['GET', 'POST'])
+def getIssuedBooks():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    
+    try:
+        if request.method == 'GET':
+            res = cursor.execute("select * from ISSUES").fetchall()
+        else:
+            req = request.json
+            res = cursor.execute(f"select * from ISSUES where memberID = {req['memberID']}").fetchall()
+    except:
+        return f"Internal Server Error!"
+    
+    return res
 
 if __name__=='__main__':
     app.run(debug=True)
