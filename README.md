@@ -36,7 +36,7 @@ To set up the project locally, follow these setps:
     ```bash
     npm install
     ```
-This project is deployed at [Vercel](https://library-management-nu.vercel.app/)
+This project is deployed [here](https://library-management-nu.vercel.app/)
 
 To use the depolyed version:
 
@@ -58,6 +58,7 @@ To use the depolyed version:
     ```bash 
     python index.py
     ```
+5. Now the backend is running locally on your system. You may now open the frontend on [this link](https://library-management-nu.vercel.app/) and the project will run just fine.
 
 ## Requirements 
 
@@ -83,8 +84,8 @@ To use the depolyed version:
 Once the project is running, this app can beuse in the foloowing ways:
 
 - **Search book by title**: Seacrh any book in the library.
-- **Search or Add Mmeber**: Seacrh any memeber or add anew member.
-- **Delete Member**: Delete a memeber of the library
+- **Search or Add Mmeber**: Seacrh any member or add a new member.
+- **Delete Member**: Delete a member of the library
 - **Keep a record of Books issued**: Keep a record of all the books that are issued.
 - **Issue a Book**: Issue a book to a memeber.
 - **Modify Memeber**: Modify a memeber details.
