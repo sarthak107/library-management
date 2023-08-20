@@ -202,11 +202,11 @@ def getTransaction():
     res = cursor.execute(f"select * from TRANSACTIONS").fetchall()
     ans = []
     for transaction in res:
-        name = cursor.execute(f"select name from MEMBERS where memberID=(?)", (transaction[1], )).fetchall()[0][0]    
+        # name = cursor.execute(f"select name from MEMBERS where memberID=(?)", (transaction[1], )).fetchall()[0][0]    
         temp = {}
         temp['amount']= transaction[2]
         temp['dot']=transaction[3]
-        temp['name']= name
+        temp['name']= transaction[1]
         ans.append(temp)
 
     return ans[::-1]
