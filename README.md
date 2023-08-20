@@ -94,8 +94,8 @@ Once the project is running, this app can beuse in the foloowing ways:
 
 ## Features 
 
-- CRUD operations on books database using Frappe API.
-- CRUD operations on members database using Frappe API.
+- CRUD operations on books database using a combination of custom Flask APIs, SQLite and the Frappe API.
+- CRUD operations on members database using Flask APIs and SQLite.
 - Minimal and clean interface
 
 ## Authors 
@@ -106,7 +106,7 @@ Once the project is running, this app can beuse in the foloowing ways:
 
 🚀 Deployment: This project is currently live and operational.
 
-🛑 Updates: I am not actively updating the project at the moment. But are open to any suggestions.
+🛑 Updates: I am not actively updating the project at the moment. But am open to any suggestions.
 
     
    
