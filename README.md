@@ -24,7 +24,7 @@ To set up the project locally, follow these setps:
     ```bash
     git clone https://github.com/sarthak107/library-management
     ```
-4. To install the all the python modules for the project enter the following command:
+4. To install all the external python modules for the project enter the following command:
     ```bash
     pip install -r requirements.txt
     ```
@@ -32,7 +32,7 @@ To set up the project locally, follow these setps:
     ```bash
     cd frappe-frontend
     ```
-6. Now run the foloowing commands to insatll all the node modules:
+6. Now run the following commands to insatll all the node modules:
     ```bash
     npm install
     ```
@@ -81,21 +81,22 @@ To use the deployed version:
 
 ## How to use
 
-Once the project is running, this app can beuse in the foloowing ways:
+Once the project is running, this app can be used in the following ways:
 
-- **Search book by title**: Seacrh any book in the library.
-- **Search or Add Mmeber**: Seacrh any member or add a new member.
+- **Search book by title**: Search any book in the library.
+- **Search or Add Member**: Search any member or add a new member.
+- **Modify Member Details**: Modify the details of an existing member.
 - **Delete Member**: Delete a member of the library
 - **Keep a record of Books issued**: Keep a record of all the books that are issued.
 - **Issue a Book**: Issue a book to a memeber.
-- **Modify Memeber**: Modify a memeber details.
 - **Return Book**: Allow members to return books.
 - **Clear Debt**: Clear member debts.
+- **Get all transactions**: Get a list of all transactions made by members post return of a book.
 
 ## Features 
 
-- CRUD operations on books database using a combination of custom Flask APIs, SQLite and the Frappe API.
-- CRUD operations on members database using Flask APIs and SQLite.
+- CRUD operations on books using a combination of custom Flask APIs, SQLite and the Frappe API.
+- CRUD operations on members using Flask APIs and SQLite.
 - Minimal and clean interface
 
 ## Authors 
