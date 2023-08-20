@@ -38,7 +38,7 @@ To set up the project locally, follow these setps:
     ```
 This project is deployed [here](https://library-management-nu.vercel.app/)
 
-To use the depolyed version:
+To use the deployed version:
 
 1. Open a folder where you want your project
 
