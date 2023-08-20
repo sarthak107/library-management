@@ -24,15 +24,17 @@ To set up the project locally, follow these setps:
     ```bash
     git clone https://github.com/sarthak107/library-management
     ```
-4. To install all the external python modules for the project enter the following command:
+    An alternative to the above three steps is to simply download the zipped folder and unzip it wherever you like.
+   
+5. To install all the external python modules for the project enter the following command:
     ```bash
     pip install -r requirements.txt
     ```
-5. Now first go in the frontend directory using:
+6. Now first go in the frontend directory using:
     ```bash
     cd frappe-frontend
     ```
-6. Now run the following commands to insatll all the node modules:
+7. Now run the following commands to insatll all the node modules:
     ```bash
     npm install
     ```
