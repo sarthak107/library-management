@@ -1,6 +1,6 @@
 # Library Management System
 
-A web based Library Management system built using Flask, ReactJs and SQLite. This app enables a librarian to manage a library by keeping track of 
+A web based Library Management system built using Flask, ReactJs and SQLite. This app enables a librarian to manage a library by keeping track of book records, member records, transactions and issued books. It has a clean and minimalistic interface for easy access and usage.
 
 # Index
 - [Installation](#installation)
