@@ -68,6 +68,16 @@ To use the depolyed version:
 ## Screenshots
 ![image](https://github.com/sarthak107/library-management/assets/77851794/9385c4fe-d567-49a3-a168-915d2991df28)
 
+![image](https://github.com/sarthak107/library-management/assets/77851794/06daefb0-2788-4fe8-af51-0a2c957827ec)
+
+![image](https://github.com/sarthak107/library-management/assets/77851794/1076df56-3fa0-4c30-9861-f9d61de03474)
+
+![image](https://github.com/sarthak107/library-management/assets/77851794/6986988a-2841-40ec-bc28-99ed5d6829e8)
+
+
+
+
+
 ## How to use
 
 Once the project is running, this app can beuse in the foloowing ways:
